@@ -9,7 +9,9 @@ wikipedia.set_lang(prefix='eu')
 csv_list = []
 csv_dict = {"Index":'',
             "Title":'',
-            "Content":''}
+            "Content":'',
+            "URL":''
+            }
 
 
 def convert_to_one_liner(input_text):
@@ -31,8 +33,9 @@ def to_check(check_item):
         return True
 
 
-for i in range(1,1000):
+for i in range(1,5):
     try:
+            print('Downdloading: ', i)
             random_page= wikipedia.random(pages=1)
             page_obj = wikipedia.page(title=random_page)
             page_content = page_obj.content
@@ -42,7 +45,8 @@ for i in range(1,1000):
                 #Create Dictionary:
                 csv_dict={"Index":i,
                         "Title":random_page,
-                        "Content":text}
+                        "Content":text,
+                        "URL": page_obj.url}
 
                 csv_list.append(csv_dict)
 
@@ -62,7 +66,7 @@ csv_filename = f"{current_date}_wikipedia_data.csv"
 
 # Write data to CSV using the list of dictionaries
 with open(csv_filename, mode='w', encoding='utf-8', newline='') as f:
-    csv_writer = csv.DictWriter(f, fieldnames=["Index", "Title", "Content"])
+    csv_writer = csv.DictWriter(f, fieldnames=["Index", "Title", "Content","URL"])
     csv_writer.writeheader()
     csv_writer.writerows(csv_list)
 
